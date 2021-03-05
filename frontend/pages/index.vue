@@ -1,4 +1,40 @@
 <template>
+  <p v-if="$fetchState.pending">
+    Fetching items...
+  </p>
+  <p v-else-if="$fetchState.error">
+    An error occurred :(
+  </p>
+  <div v-else>
+    <h1>Nuxt Items</h1>
+    <ul>
+      <li v-for="item of items" :key="item.id">
+        {{ item.name }}
+      </li>
+    </ul>
+    <button @click="$fetch">
+      Refresh
+    </button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: []
+    };
+  },
+  async fetch() {
+    this.items = await fetch("http://localhost:1337/items").then(res =>
+      res.json()
+    );
+  }
+};
+</script>
+
+<!--
+<template>
   <div class="container">
     <div>
       <Logo />
@@ -71,3 +107,4 @@ export default {}
   padding-top: 15px;
 }
 </style>
+-->
